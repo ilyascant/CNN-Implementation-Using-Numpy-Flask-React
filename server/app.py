@@ -11,7 +11,7 @@ CORS(app)  # Allow CORS for all routes
 
 current_directory = os.path.dirname(os.path.abspath(__file__))
 
-file_name = "CNN/cnn_model_L0-05331331_R45610017.pkl"
+file_name = "CNN/cnn_model_L0-14372585_R7973260.pkl"
 file_path = os.path.join(current_directory, file_name)
 
 with open(file_path, 'rb') as model_file:

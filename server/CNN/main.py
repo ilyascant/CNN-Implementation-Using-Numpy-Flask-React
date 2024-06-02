@@ -47,7 +47,7 @@ if __name__ == "__main__":
     ###### CNN ######
     cnn = CNN(X_train, y_train, X_test, y_test)
 
-    model_filename = 'cnn_model_L0-05331331_R45610017.pkl'
+    model_filename = 'cnn_model_L0-01594374_R50421853.pkl'
     with open(model_filename, 'rb') as file:
         cnn = pickle.load(file)
         
