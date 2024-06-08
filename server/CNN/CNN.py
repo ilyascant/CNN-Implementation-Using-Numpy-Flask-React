@@ -193,7 +193,7 @@ class CNN:
         bs4_hat = self.bs4 / (1 - beta2 ** self.t)
         self.b4 -= self.alpha * bv4_hat / np.sqrt(bs4_hat+1e-7)
  
-    def adamGD_multi(self, chunk_range, conv_stride, pool_size, pool_stride, X, Y):
+    def adam_optimizer_multi(self, chunk_range, conv_stride, pool_size, pool_stride, X, Y):
         cost = 0
 
         df1 = np.zeros(self.f1.shape)
@@ -226,7 +226,7 @@ class CNN:
 
         return chunk_range, df1, db1, df2, db2, dw3, db3, dw4, db4, cost 
 
-    def adamGD(self, batch, costs, conv_stride, pool_size, pool_stride, t, epoch, epochs, beta1=0.9, beta2=0.999, epsilon=1e-8):
+    def adam_optimizer(self, batch, costs, conv_stride, pool_size, pool_stride, t, epoch, epochs, beta1=0.9, beta2=0.999, epsilon=1e-8):
         X = batch[:,0:-1] 
         X = X.reshape(len(batch), 1, 28, 28)
         Y = batch[:,-1]
@@ -243,7 +243,7 @@ class CNN:
                 start = i * chunk_size
                 end = min(start + chunk_size, batch_size)
 
-                processes.append(pool.apply_async(self.adamGD_multi, ((start, end), conv_stride, pool_size, pool_stride, X, Y)))
+                processes.append(pool.apply_async(self.adam_optimizer_multi, ((start, end), conv_stride, pool_size, pool_stride, X, Y)))
 
             for i, process in enumerate(processes):
                 df1, df2, dw3, dw4, db1, db2, db3, db4 = self.init_ADAM_params()
@@ -289,7 +289,7 @@ class CNN:
             
             t = tqdm(batches, leave=True)
             for index, batch in enumerate(t):
-                self.adamGD(batch, costs, conv_stride, pool_size, pool_stride, t, epoch, epochs, beta1, beta2)
+                self.adam_optimizer(batch, costs, conv_stride, pool_size, pool_stride, t, epoch, epochs, beta1, beta2)
                 t.set_description("Epoch: %d/%d, Cost: %.4f, Batch Size: %d/%d, Alpha: %f" % ((epoch +1), epochs, costs[-1], batch_size, batch_size, self.alpha))
             
             val_cost = self.accuracy(conv_stride, pool_size, pool_stride, val_costs)
