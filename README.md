@@ -7,3 +7,5 @@
 ## Project Overview
 
 This project involves building a Convolutional Neural Network (CNN) from scratch using NumPy. The goal is to gain a deeper understanding of deep learning concepts and the mechanics behind CNNs.
+
+<img src="https://t.bkit.co/w_6688c855d09c1.gif" />
